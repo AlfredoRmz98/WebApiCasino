@@ -48,7 +48,7 @@ namespace WebApiCasino
 
             services.AddSwaggerGen(c =>
             {
-                c.SwaggerDoc("v1", new OpenApiInfo { Title = "WebAppTrabajadores", Version = "v1" });
+                c.SwaggerDoc("v3", new OpenApiInfo { Title = "WebApiCasino", Version = "v3" });
 
                 c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
                 {
@@ -82,7 +82,7 @@ namespace WebApiCasino
             services.AddAuthorization(opciones =>
             {
                 opciones.AddPolicy("EsAdmin", politica => politica.RequireClaim("esAdmin"));
-                opciones.AddPolicy("EsJugador", politica => politica.RequireClaim("EsJugador"));
+                opciones.AddPolicy("EsParticipante", politica => politica.RequireClaim("EsParticipante"));
             });
 
             services.AddCors(opciones =>

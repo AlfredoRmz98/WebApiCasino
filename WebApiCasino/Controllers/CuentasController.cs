@@ -32,7 +32,7 @@ namespace WebApiCasino.Controllers
             var user = new IdentityUser { UserName = credenciales.Email, Email = credenciales.Email };
             var result = await userManager.CreateAsync(user, credenciales.Password);
 
-            if(result.Succeeded)
+            if (result.Succeeded)
             {
                 return await ConstruirToken(credenciales);
             }
@@ -48,7 +48,7 @@ namespace WebApiCasino.Controllers
             var result = await signInManager.PasswordSignInAsync(credencialesUsuario.Email,
                 credencialesUsuario.Password, isPersistent: false, lockoutOnFailure: false);
 
-            if(result.Succeeded)
+            if (result.Succeeded)
             {
                 return await ConstruirToken(credencialesUsuario);
             }
@@ -59,24 +59,25 @@ namespace WebApiCasino.Controllers
         }
         [HttpGet("RenovarToke")]
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
-        public async Task<ActionResult<RespuestaAutenticacion>> Renovar ()
+        public async Task<ActionResult<RespuestaAutenticacion>> Renovar()
         {
-            var emailClaim = HttpContext.User.Claims.Where(claim =>claim.Type == "email.").FirstOrDefault();
+            var emailClaim = HttpContext.User.Claims.Where(claim => claim.Type == "email.").FirstOrDefault();
             var email = emailClaim.Value;
 
             var credenciales = new CredencialesUsuario()
             {
-                Email = email,
+                Email = email
             };
             return await ConstruirToken(credenciales);
         }
 
         public async Task<RespuestaAutenticacion> ConstruirToken(CredencialesUsuario credencialesUsuario)
         {
-            var claims = new List<Claim>();
+            var claims = new List<Claim>
             {
-                new Claim("email", credencialesUsuario.Email);
-                
+                new Claim("email", credencialesUsuario.Email),
+                new Claim("ClaimPrueba", "Este es un claim de prueba ")
+
             };
 
             var usuario = await userManager.FindByEmailAsync(credencialesUsuario.Email);
@@ -88,7 +89,7 @@ namespace WebApiCasino.Controllers
 
             var expiration = DateTime.UtcNow.AddMinutes(30);
 
-            var securityToken = new JwtSecurityToken(issuer: null, audience: null, claims: claims, 
+            var securityToken = new JwtSecurityToken(issuer: null, audience: null, claims: claims,
                 expires: expiration, signingCredentials: creds);
             return new RespuestaAutenticacion()
             {

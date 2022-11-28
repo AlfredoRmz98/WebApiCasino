@@ -59,5 +59,12 @@
         public int Maceta = 52;
         public int Arpa = 53;
         public int Rana = 54;
+
+        public List<Participante> Participante { get; set; }
+        public List<ParticipanteRifa> ParticipanteRifa { get; set; }
+        public List<Rifa> Rifa { get; set; }
+        public List<Premio> Premio { get; set; }
     }
+    
+
 }
